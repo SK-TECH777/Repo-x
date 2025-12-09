@@ -59,7 +59,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             )
         )
    
-    elif data == "paidusers":
+    elif data == "premium":
     await query.message.delete()
     await query.message.reply(
         text=(
