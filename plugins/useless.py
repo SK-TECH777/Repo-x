@@ -106,6 +106,11 @@ async def check_delete_time(client: Bot, message: Message):
 
     await message.reply(f"<b><blockquote>Cᴜʀʀᴇɴᴛ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇʀ ɪs sᴇᴛ ᴛᴏ {duration}sᴇᴄᴏɴᴅs.</blockquote></b>")
 
+
+@Bot.on_message(filters.private & filters.incoming)
+async def useless(_,message: Message):
+    if USER_REPLY_TEXT:
+        await message.reply(USER_REPLY_TEXT)
 #=====================================================================================##
 
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
