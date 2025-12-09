@@ -16,30 +16,18 @@ from database.database import *
 @Bot.on_callback_query()
 async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
-    if data == "help":
-        await query.message.edit_text(
-            text=HELP_TXT.format(first=query.from_user.first_name),
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton('ʜᴏᴍᴇ', callback_data='trail'),
-                        InlineKeyboardButton("ᴄʟᴏꜱᴇ", callback_data='close')
-                    ]
-                ]
-            )
-        )
-    elif data == "about":
+    if data == "about":
         await query.message.edit_text(
             text=ABOUT_TXT.format(first=query.from_user.first_name),
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton('ʜᴏᴍᴇ', callback_data='trail'),
-                     InlineKeyboardButton('ᴄʟᴏꜱᴇ', callback_data='close')]
+                    [InlineKeyboardButton('• ʜᴏᴍᴇ •', callback_data='trail'),
+                     InlineKeyboardButton('• ᴄʟᴏsᴇ •', callback_data='close')]
                 ]
             )
         )
+   
        
     elif data == "trail":
         await query.message.edit_text(
@@ -47,36 +35,14 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton('me', callback_data='help'),
-                     InlineKeyboardButton('i', callback_data='about')]
-                ]
+            [InlineKeyboardButton("• ᴀʙᴏᴜᴛ •", callback_data="about"), 
+             InlineKeyboardButton("• ᴄʟᴏsᴇ •", callback_data='close')
+            ], [InlineKeyboardButton("• ᴅᴇᴠᴇʟᴏᴘᴇʀ •", url="https://t.me/Minato_Sencie")
+               ]
+              ]
             )
-    )
-    
-    elif data == "start":
-        await query.message.edit_text(
-            text=START_MSG.format(first=query.from_user.first_name),
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("ʜᴇʟᴘ", callback_data='help'),
-                 InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data='about')]
-            ])
         )
-
-
-# Don't Remove Credit @CodeFlix_Bots, @rohit_1888
-# Ask Doubt on telegram @CodeflixSupport
-#
-# Copyright (C) 2025 by Codeflix-Bots@Github, < https://github.com/Codeflix-Bots >.
-#
-# This file is part of < https://github.com/Codeflix-Bots/FileStore > project,
-# and is released under the MIT License.
-# Please see < https://github.com/Codeflix-Bots/FileStore/blob/master/LICENSE >
-#
-# All rights reserved.
-#
-
-
+   
     elif data == "premium":
         await query.message.delete()
         await client.send_photo(
