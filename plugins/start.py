@@ -99,7 +99,7 @@ async def start_command(client: Client, message: Message):
                 btn = [
                     [InlineKeyboardButton("• ⚡ Verify Token •", url=link),
                      InlineKeyboardButton("• How to Verify ❓•", url=TUT_VID)],
-                    [InlineKeyboardButton("• 💰 Buy Premium •", callback_data="premium")]
+                    [InlineKeyboardButton("• 💰 Buy Premium •", callback_data="paidusers")]
                 ]
                 return await temp.edit(
                     f"⚠️ <b>Token verification required</b>\n\n"
