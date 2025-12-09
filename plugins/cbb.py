@@ -89,7 +89,10 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                             url=SCREENSHOT_URL,
                         )
                     ],
-                    [InlineKeyboardButton("🔒 Close", callback_data="close")],
+                    [InlineKeyboardButton(
+                    text='♻️ Tʀʏ Aɢᴀɪɴ',
+                    url=f"https://t.me/{client.username}?start={message.command[1]}"
+                    )],
                 ]
             ),
         )
