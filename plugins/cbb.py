@@ -58,7 +58,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
               ]
             )
         )
-   
+
     elif data == "premium":
     await query.message.delete()
     await query.message.reply(
@@ -72,8 +72,8 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             f"● {PRICE5} rs For 1 Year Prime Membership\n\n"
             f"💵 UPI ID - <code>{UPI_ID}</code>\n\n"
             f"📸 QR - Click here to scan: {UPI_IMAGE_URL}\n\n"
-            "♻️ If payment doesn't go through on the QR above, contact admin for a new QR.\n\n"
-            "‼️ Must send a screenshot after payment."
+            "♻️ If payment doesn't go through, contact admin for a new QR.\n\n"
+            "‼️ Must send screenshot after payment."
         ),
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
@@ -93,7 +93,6 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             ]
         )
     )
-
 
     elif data == "close":
         await query.message.delete()
