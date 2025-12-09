@@ -99,7 +99,7 @@ async def start_command(client: Client, message: Message):
                 btn = [
                     [InlineKeyboardButton("• ⚡ Verify Token •", url=link),
                      InlineKeyboardButton("• How to Verify ❓•", url=TUT_VID)],
-                    [InlineKeyboardButton("• 💰 Buy Premium •", callback_data="paidusers")]
+                    [InlineKeyboardButton("• 💰 Buy Premium •", callback_data="premium")]
                 ]
                 return await temp.edit(
                     f"⚠️ <b>Token verification required</b>\n\n"
@@ -245,7 +245,7 @@ async def start_command(client: Client, message: Message):
                 id=message.from_user.id
             ),
             reply_markup=reply_markup,
-            message_effect_id=5104841245755180586
+            message_effect_id=5046509860389126442
                 )
 #=====================================================================================##
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
