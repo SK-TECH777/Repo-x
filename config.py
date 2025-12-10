@@ -42,7 +42,7 @@ FORCE_PIC = os.environ.get("FORCE_PIC", "https://files.catbox.moe/dpk0pi.jpg")
 
 #--------------------------------------------
 # Enable or Disable Verify Mode
-VERIFY_MODE = os.environ.get("VERIFY_MODE", "False").lower() == "true"
+VERIFY_MODE = os.environ.get("VERIFY_MODE", "True").lower() == "true"
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "vplink.in")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "8a97662a9011593aca4eba9e00a5b93b5267b21c")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 43200)) # Add time in seconds
