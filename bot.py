@@ -81,25 +81,22 @@ class Bot(Client):
         except Exception as e:
             self.LOGGER(__name__).warning(e)
             self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
-            self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/spk_links")
+            self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/Sk_Anime_1")
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/spk_links")
+        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/Minato_Sencie")
         self.LOGGER(__name__).info(f"""       
 
 
-  ___ ___  ___  ___ ___ _    _____  _____  ___ _____ ___ 
- / __/ _ \|   \| __| __| |  |_ _\ \/ / _ )/ _ \_   _/ __|
-| (_| (_) | |) | _|| _|| |__ | | >  <| _ \ (_) || | \__ \
- \___\___/|___/|___|_| |____|___/_/\_\___/\___/ |_| |___/
+  |_| |___/
                                                          
  
                                           """)
 
         self.set_parse_mode(ParseMode.HTML)
         self.username = usr_bot_me.username
-        self.LOGGER(__name__).info(f"Bot Running..! Made by @spk_links")   
+        self.LOGGER(__name__).info(f"Bot Running..! Made by https://t.me/Minato_Sencie")   
 
         # Start Web Server
         app = web.AppRunner(await web_server())
@@ -107,7 +104,7 @@ class Bot(Client):
         await web.TCPSite(app, "0.0.0.0", PORT).start()
 
 
-        try: await self.send_message(OWNER_ID, text = f"<b><blockquote> Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ by @spk_links</blockquote></b>")
+        try: await self.send_message(OWNER_ID, text = f"<b>›› ʜᴇʏ sᴇɴᴘᴀɪ!! \nɪ'ᴍ ᴀʟɪᴠᴇ ɴᴏᴡ 🍃...</b>")
         except: pass
 
     async def stop(self, *args):
@@ -118,7 +115,7 @@ class Bot(Client):
         """Run the bot."""
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.start())
-        self.LOGGER(__name__).info("Bot is now running. Thanks to @spk_links")
+        self.LOGGER(__name__).info("Bot is now running. Thanks to https://t.me/Minato_Sencie")
         try:
             loop.run_forever()
         except KeyboardInterrupt:
