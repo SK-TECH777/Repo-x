@@ -98,6 +98,43 @@ class Bot(Client):
         self.username = usr_bot_me.username
         self.LOGGER(__name__).info(f"Bot Running..! Made by https://t.me/Minato_Sencie")   
 
+        # ===============================
+        #  ADDED: Load DB + Shortner Settings + Verify Expiry
+        # ===============================
+        try:
+            from database.database import db as _db
+            self.mongodb = _db
+
+            # Load shortner settings
+            try:
+                s = await self.mongodb.get_shortner_settings()
+                self.shortner_enabled = s.get('shortner_enabled', True)
+                self.short_url = s.get('short_url') or SHORTLINK_URL
+                self.short_api = s.get('short_api') or SHORTLINK_API
+                self.tutorial_link = s.get('tutorial_link') or "https://t.me/How_to_Download_7x/26"
+            except:
+                self.shortner_enabled = True
+                self.short_url = SHORTLINK_URL
+                self.short_api = SHORTLINK_API
+                self.tutorial_link = "https://t.me/How_to_Download_7x/26"
+
+            # Load verify expiry global
+            try:
+                ve = await self.mongodb.get_verify_expiry_global()
+                self.verify_expiry = ve
+            except:
+                self.verify_expiry = None
+
+        except:
+            self.mongodb = None
+            self.shortner_enabled = True
+            self.short_url = SHORTLINK_URL
+            self.short_api = SHORTLINK_API
+            self.tutorial_link = "https://t.me/How_to_Download_7x/26"
+            self.verify_expiry = None
+
+        # ===============================
+
         # Start Web Server
         app = web.AppRunner(await web_server())
         await app.setup()
