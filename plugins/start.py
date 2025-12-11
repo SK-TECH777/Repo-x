@@ -73,10 +73,7 @@ async def start_command(client: Client, message: Message):
         # Token verification - ONLY if VERIFY_MODE is True
         verify_status = await db.get_verify_status(id)
 
-# NEW: Read VERIFY MODE from database (not config)
-db_verify_mode = await db.get_val("VERIFY_MODE")
-
-if db_verify_mode and (SHORTLINK_URL and SHORTLINK_API):
+        if VERIFY_MODE and (SHORTLINK_URL and SHORTLINK_API):
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
 
