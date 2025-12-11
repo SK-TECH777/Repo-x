@@ -43,7 +43,19 @@ async def start_command(client: Client, message: Message):
     # First temporary message
     temp = await message.reply("⏳ Wait a sec...", quote=True)
     
-    # Add user if not already present
+    
+    # ============================
+    # Load dynamic Shortner + Verify settings from DB
+    # ============================
+    shortner_settings = await db.get_shortner_settings()
+    client.shortner_enabled = shortner_settings.get("shortner_enabled", True)
+    client.short_url = shortner_settings.get("short_url", SHORTLINK_URL)
+    client.short_api = shortner_settings.get("short_api", SHORTLINK_API)
+    client.tutorial_link = shortner_settings.get("tutorial_link", TUT_VID)
+
+    verify_exp = await db.get_verify_expiry_global()
+    client.verify_expiry = verify_exp if verify_exp is not None else VERIFY_EXPIRE
+# Add user if not already present
     if not await db.present_user(user_id):
         try:
             await db.add_user(user_id)
@@ -70,11 +82,11 @@ async def start_command(client: Client, message: Message):
 
     text = message.text
     if len(text) > 7:
-        # Token verification - ONLY if VERIFY_MODE is True
+        # Token verification - ONLY if client.verify_mode is True
         verify_status = await db.get_verify_status(id)
 
-        if VERIFY_MODE and (SHORTLINK_URL and SHORTLINK_API):
-            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+        if client.verify_mode and (client.short_url and client.short_api):
+            if verify_status['is_verified'] and client.verify_expiry < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
 
             if "verify_" in message.text:
@@ -86,14 +98,14 @@ async def start_command(client: Client, message: Message):
                 current = await db.get_verify_count(id)
                 await db.set_verify_count(id, current + 1)
                 return await temp.edit(
-                    f"✅ 𝗧𝗼𝗸𝗲𝗻 𝘃𝗲𝗿𝗶𝗳𝗶𝗲𝗱! Vᴀʟɪᴅ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}"
+                    f"✅ 𝗧𝗼𝗸𝗲𝗻 𝘃𝗲𝗿𝗶𝗳𝗶𝗲𝗱! Vᴀʟɪᴅ ғᴏʀ {get_exp_time(client.verify_expiry)}"
                 )
 
             if not verify_status['is_verified'] and not is_premium:
                 token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
                 await db.update_verify_status(id, verify_token=token, link="")
                 link = await get_shortlink(
-                    SHORTLINK_URL, SHORTLINK_API,
+                    client.short_url, client.short_api,
                     f'https://telegram.dog/{client.username}?start=verify_{token}'
                 )
                 btn = [
@@ -103,9 +115,9 @@ async def start_command(client: Client, message: Message):
                 ]
                 return await temp.edit(
                     f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲...\n\n"
-                    f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ: {get_exp_time(VERIFY_EXPIRE)}</b>\n\n"
+                    f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ: {get_exp_time(client.verify_expiry)}</b>\n\n"
                     f"<b>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ??</b>\n\n"
-                    f"<b>ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    f"<b>ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(client.verify_expiry)}</b>",
                     
                     reply_markup=InlineKeyboardMarkup(btn)
                 )  
