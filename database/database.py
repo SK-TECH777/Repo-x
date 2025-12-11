@@ -260,6 +260,23 @@ class Rohit:
         ]
         result = await self.sex_data.aggregate(pipeline).to_list(length=1)
         return result[0]["total"] if result else 0
+        
+    # ==========================
+    #   VERIFY MODE (ON / OFF)
+    # ==========================
+
+    async def get_val(self, key: str):
+        data = await self.database["settings"].find_one({"_id": key})
+        if data:
+            return data.get("value", False)
+        return False
+
+    async def update_val(self, key: str, value):
+        await self.database["settings"].update_one(
+            {"_id": key},
+            {"$set": {"value": value}},
+            upsert=True
+        )
 
 
 db = Rohit(DB_URI, DB_NAME)
