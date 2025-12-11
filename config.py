@@ -183,3 +183,44 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
    
+
+
+# ---------- Runtime VERIFY_MODE helpers ----------
+import json, os
+_SETTINGS_FILE = os.path.join(os.path.dirname(__file__), "verify_settings.json")
+
+def _load_settings():
+    try:
+        with open(_SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return {}
+
+def _save_settings(d):
+    try:
+        with open(_SETTINGS_FILE, "w") as f:
+            json.dump(d, f)
+        return True
+    except:
+        return False
+
+def get_verify_mode_value():
+    data = _load_settings()
+    if "verify" in data:
+        return bool(data.get("verify"))
+    return os.environ.get("VERIFY_MODE", "True").lower() == "true"
+
+def set_verify_mode_value(value: bool):
+    data = _load_settings()
+    data["verify"] = bool(value)
+    return _save_settings(data)
+
+# Backwards compatible object
+class _VerifyMode:
+    def __bool__(self):
+        return get_verify_mode_value()
+    def __repr__(self):
+        return f"<VERIFY_MODE={get_verify_mode_value()}>"
+
+VERIFY_MODE = _VerifyMode()
+# --------------------------------------------------
