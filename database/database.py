@@ -260,7 +260,42 @@ class Rohit:
         ]
         result = await self.sex_data.aggregate(pipeline).to_list(length=1)
         return result[0]["total"] if result else 0
-        
+
+
+# ========== Shortner settings ==========
+    async def set_shortner_status(self, enabled: bool):
+        coll = self.database['shortner_settings']
+        await coll.update_one({'_id': 'config'}, {'$set': {'shortner_enabled': enabled}}, upsert=True)
+
+    async def update_shortner_setting(self, key, value):
+        coll = self.database['shortner_settings']
+        await coll.update_one({'_id': 'config'}, {'$set': {key: value}}, upsert=True)
+
+    async def get_shortner_settings(self):
+        coll = self.database['shortner_settings']
+        data = await coll.find_one({'_id': 'config'})
+        if not data:
+            return {
+                "shortner_enabled": True,
+                "short_url": None,
+                "short_api": None,
+                "tutorial_link": None,
+                "verify_expiry": None
+            }
+        data.pop("_id", None)
+        return data
+
+    # ========== Verify Expiry (Global) ==========
+    async def update_verify_expiry_global(self, seconds):
+        coll = self.database['shortner_settings']
+        await coll.update_one({'_id': 'config'}, {'$set': {'verify_expiry': seconds}}, upsert=True)
+
+    async def get_verify_expiry_global(self):
+        coll = self.database['shortner_settings']
+        data = await coll.find_one({'_id': 'config'})
+        if not data:
+            return None
+        return data.get("verify_expiry", None)
 
 
 db = Rohit(DB_URI, DB_NAME)
